@@ -25,14 +25,47 @@ fmt_dcimals <- function(decimals=0){
     function(x) format(x,nsmall = decimals,scientific = FALSE)
 }
 
+nutrientStats <- function(data, n) {
 
-plotNitrogen <- function(df, saveFile, savePath) {
+  if (n=="nitrateNitrogen.lbsAF") {
 
-  nitrogen <- ggplot(data = df, aes(x=year)) + 
+      data <- mutate(data, delta=nitrogenRangeHigh - nitrogenRangeLow)
+      data <- mutate(data, ave=(nitrogenRangeHigh + nitrogenRangeLow)/2)
+
+  } else if (n=="phosphorousP2O5.lbsAF") {
+
+      data <- mutate(data, delta=1)
+      data <- mutate(data, ave=1)    
+
+  } else {
+
+      data <- mutate(data, delta=-1)
+      data <- mutate(data, ave=-1)
+
+  }
+
+
+
+  return(data)
+}
+
+
+plotNutrient <- function(df, nutrient, saveFile, savePath) {
+
+  df <- nutrientStats(data=df, n=nutrient)
+
+  nutrient <- ggplot(data = df, aes(x=year)) + 
+  #nutrient <- ggplot(data = df, aes_string(x=dfGroup)) + 
   
-  geom_boxplot(aes(y = nitrateNitrogen.lbsAF, group=year, color=year), shape=21) +
-  #geom_dotplot(aes(y = nitrateNitrogen.lbsAF, group=year, color=year), binaxis='y', stackdir='center', dotsize=1) +
-  #geom_dotplot(aes(y = nitrateNitrogen.lbsAF), binaxis='y', stackdir='center', dotsize=1)
+  #geom_boxplot(aes(y = nitrateNitrogen.lbsAF, group=year), shape=21) +
+  #geom_boxplot(aes_string(y = nutrient, group=dfGroup), shape=21) +
+  geom_boxplot(aes_string(y = nutrient, group="year"), shape=21) +
+
+
+  stat_summary(data = df, aes(x=year, y=delta), fun.y=mean, colour="red", geom="line") +
+
+  stat_summary(data = df, aes(x=year, y=ave), fun.y=mean, colour="blue", geom="line") +
+  #stat_summary(data = df, aes_string(x=dfGroup, y=ave), fun.y=mean, colour="blue", geom="line") +
   
   scale_y_continuous(trans = 'log10') +
 
@@ -41,7 +74,7 @@ plotNitrogen <- function(df, saveFile, savePath) {
 
   if (saveFile) {
 
-    fileName <- paste("ggsave.nitrogen.pdf", sep="")
+    fileName <- paste("ggsave.", nutrient, ".pdf", sep="")
   
     if (file.exists(fileName)) { file.remove(fileName) }
       
@@ -53,6 +86,6 @@ plotNitrogen <- function(df, saveFile, savePath) {
   
   }
 
-  return(nitrogen)
+  return(nutrient)
 }
 
