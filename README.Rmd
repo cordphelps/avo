@@ -42,7 +42,7 @@ for (i in 1:length(nutrientList)) {
 
   print(gg)
   
-  break()
+  if (i==4) { break() }
   
 }
 

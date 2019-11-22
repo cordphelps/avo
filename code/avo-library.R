@@ -27,7 +27,7 @@ fmt_dcimals <- function(decimals=0){
 
 nutrientStats <- function(data, n) {
 
-  returnList <= list()
+  returnList <- list()
 
   if (n=="nitrateNitrogen.lbsAF") {
 
