@@ -1,33 +1,6 @@
-
-
----
-title: "CIMIS"
-output: github_document
----
-
-```{r, echo=F, message=F, warning=F}
-
-source("./code/avo-library.R")
-
-source.url <- c("https://raw.githubusercontent.com/cordphelps/avo/master/data/soilData.csv")
-soilData.df <- read.csv(source.url, header=TRUE, row.names=NULL)
-
-
-
-```
+CIMIS
+================
 
 ### weekly composition of species and individuals?
 
-{r, echo=F, message=F, warning=F}
-
-library(ggplot2)
-library(dplyr)
-
-gg <- plotNitrogen(df=soilData.df, saveFile=FALSE, savePath=NULL)
-
-print(gg)
-
-
-
-```
-
+![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)![](README_files/figure-markdown_github/unnamed-chunk-2-2.png)![](README_files/figure-markdown_github/unnamed-chunk-2-3.png)![](README_files/figure-markdown_github/unnamed-chunk-2-4.png)
