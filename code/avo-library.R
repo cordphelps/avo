@@ -39,24 +39,24 @@ nutrientStats <- function(data, n) {
 
   } else if (n=="phosphorousP2O5.lbsAF") {
 
-      data <- mutate(data, delta=1)
-      data <- mutate(data, ave=1)  
+      data <- mutate(data, delta=P2O5RangeHigh - P2O5RangeLow)
+      data <- mutate(data, ave=(P2O5RangeHigh + P2O5RangeLow)/2) 
 
       returnList[[2]] <- "P2O5RangeLow"
       returnList[[3]] <- "P2O5RangeHigh"
 
   } else if (n=="potassiumK2OExch.lbsAF") {
 
-      data <- mutate(data, delta=0)
-      data <- mutate(data, ave=0)  
+      data <- mutate(data, delta=K2OExchHigh - K2OExchLow)
+      data <- mutate(data, ave=(K2OExchHigh + K2OExchLow)/2)
 
       returnList[[2]] <- "K2OExchLow"
       returnList[[3]] <- "K2OExchHigh"
 
   } else if (n=="potassiumK2OSol.lbsAF") {
 
-      data <- mutate(data, delta=0)
-      data <- mutate(data, ave=0)
+      data <- mutate(data, delta=K2OSolHigh - K2OSolLow)
+      data <- mutate(data, ave=(K2OSolHigh + K2OSolLow)/2)
 
       returnList[[2]] <- "K2OSolLow"
       returnList[[3]] <- "K2OSolHigh"
