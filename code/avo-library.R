@@ -27,15 +27,74 @@ fmt_dcimals <- function(decimals=0){
 
 nutrientStats <- function(data, n) {
 
+  returnList <= list()
+
   if (n=="nitrateNitrogen.lbsAF") {
 
       data <- mutate(data, delta=nitrogenRangeHigh - nitrogenRangeLow)
       data <- mutate(data, ave=(nitrogenRangeHigh + nitrogenRangeLow)/2)
 
+      returnList[[2]] <- "nitrogenRangeLow"
+      returnList[[3]] <- "nitrogenRangeHigh"
+
   } else if (n=="phosphorousP2O5.lbsAF") {
 
       data <- mutate(data, delta=1)
-      data <- mutate(data, ave=1)    
+      data <- mutate(data, ave=1)  
+
+      returnList[[2]] <- "P2O5RangeLow"
+      returnList[[3]] <- "P2O5RangeHigh"
+
+  } else if (n=="potassiumK2OExch.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)  
+
+      returnList[[2]] <- "K2OExchLow"
+      returnList[[3]] <- "K2OExchHigh"
+
+  } else if (n=="potassiumK2OSol.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
+
+      returnList[[2]] <- "K2OSolLow"
+      returnList[[3]] <- "K2OSolHigh"
+
+  } else if (n=="calciumExch.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)  
+
+  } else if (n=="calciumSol.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
+
+  } else if (n=="magnesiumExch.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)  
+
+  } else if (n=="magnesiumSol.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
+
+  } else if (n=="sodiumExch.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
+
+  } else if (n=="sodiumSol.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
+
+  } else if (n=="sulphate.lbsAF") {
+
+      data <- mutate(data, delta=0)
+      data <- mutate(data, ave=0)
 
   } else {
 
@@ -44,27 +103,28 @@ nutrientStats <- function(data, n) {
 
   }
 
+  returnList[[1]] <- data
 
-
-  return(data)
+  return(returnList)
 }
 
 
 plotNutrient <- function(df, nutrient, saveFile, savePath) {
 
-  df <- nutrientStats(data=df, n=nutrient)
+  returnList <- nutrientStats(data=df, n=nutrient)
 
-  nutrient <- ggplot(data = df, aes(x=year)) + 
+  nutrient <- ggplot(data = returnList[[1]], aes(x=year)) + 
   #nutrient <- ggplot(data = df, aes_string(x=dfGroup)) + 
   
   #geom_boxplot(aes(y = nitrateNitrogen.lbsAF, group=year), shape=21) +
   #geom_boxplot(aes_string(y = nutrient, group=dfGroup), shape=21) +
-  geom_boxplot(aes_string(y = nutrient, group="year"), shape=21) +
+  geom_boxplot(aes_string(y = nutrient, group="year"), fill="green", alpha=0.5, shape=21) +
 
+  geom_ribbon(aes_string(ymin=returnList[[2]], ymax=returnList[[3]], x="year"), fill="blue", alpha=.4) +
 
-  stat_summary(data = df, aes(x=year, y=delta), fun.y=mean, colour="red", geom="line") +
+  stat_summary(data = returnList[[1]], aes(x=year, y=delta), fun.y=mean, colour="red", geom="line") +
 
-  stat_summary(data = df, aes(x=year, y=ave), fun.y=mean, colour="blue", geom="line") +
+  stat_summary(data = returnList[[1]], aes(x=year, y=ave), fun.y=mean, colour="blue", geom="line") +
   #stat_summary(data = df, aes_string(x=dfGroup, y=ave), fun.y=mean, colour="blue", geom="line") +
   
   scale_y_continuous(trans = 'log10') +

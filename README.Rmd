@@ -23,13 +23,31 @@ library(dplyr)
 
 source("./code/avo-library.R")
 
-gg <- plotNutrient(df=soilData.df, nutrient="nitrateNitrogen.lbsAF", saveFile=FALSE, savePath=NULL)
+nutrientList <- c("nitrateNitrogen.lbsAF",
+                  "phosphorousP2O5.lbsAF",
+                  "potassiumK2OExch.lbsAF",
+                  "potassiumK2OSol.lbsAF",
+                  "calciumExch.lbsAF",
+                  "calciumSol.lbsAF",
+                  "magnesiumExch.lbsAF",
+                  "magnesiumSol.lbsAF",
+                  "sodiumExch.lbsAF",
+                  "sodiumSol.lbsAF",
+                  "sulphate.lbsAF" 
+                  )
 
-print(gg)
+for (i in 1:length(nutrientList)) {
+  
+  gg <- plotNutrient(df=soilData.df, nutrient=nutrientList[[i]],                            saveFile=FALSE, savePath=NULL)
 
-gg <- plotNutrient(df=soilData.df, nutrient="phosphorousP2O5.lbsAF", saveFile=FALSE, savePath=NULL)
+  print(gg)
+  
+  break()
+  
+}
 
-print(gg)
+
+
 
 ```
 
